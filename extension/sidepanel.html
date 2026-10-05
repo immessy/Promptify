@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="sidepanel.css">
+</head>
+<body>
+  <h1>Prompt Structuring</h1>
+  
+  <div class="input-section">
+    <textarea id="ideaInput" rows="5" placeholder="Type your rough idea here..."></textarea>
+    <button id="suggestBtn">Suggest tier</button>
+  </div>
+
+  <div id="errorBox" class="hidden error"></div>
+
+  <div id="tierSection" class="hidden">
+    <h3>Suggested Tier: <span id="suggestedTierLabel"></span></h3>
+    <p id="reasonText"></p>
+    <details>
+      <summary>Signals detected</summary>
+      <ul id="signalsList"></ul>
+    </details>
+    
+    <div class="picker-section">
+      <label for="tierPicker">Confirm or override tier:</label>
+      <select id="tierPicker">
+        <option value="novice">Novice</option>
+        <option value="intermediate">Intermediate</option>
+        <option value="production">Production</option>
+      </select>
+      <button id="generateBtn">Generate</button>
+    </div>
+  </div>
+
+  <div id="documentsSection" class="hidden">
+    <!-- Documents rendered here -->
+  </div>
+
+  <script src="sidepanel.js"></script>
+</body>
+</html>
