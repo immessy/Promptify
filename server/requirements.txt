@@ -1,0 +1,8 @@
+flask
+flask-cors
+python-dotenv
+strands-agents
+google-genai
+ollama
+anthropic
+pydantic

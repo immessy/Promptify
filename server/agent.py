@@ -4,6 +4,7 @@ from typing import List
 import strands
 from strands.models.ollama import OllamaModel
 from strands.models.anthropic import AnthropicModel
+from strands.models.gemini import GeminiModel
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -24,12 +25,14 @@ class GenerateResult(BaseModel):
     documents: List[Document] = Field(description="The list of generated documents")
 
 # Configure Model
-# The user recommended anthropic for reliability or ollama for local. 
-# We default to anthropic if ANTHROPIC_API_KEY is provided, else fallback to ollama.
-if os.getenv("ANTHROPIC_API_KEY"):
+# We default to gemini if GEMINI_API_KEY is provided, else fallback to local ollama.
+# We also provide anthropic as a fallback option if ANTHROPIC_API_KEY is explicitly set.
+if os.getenv("GEMINI_API_KEY"):
+    model = GeminiModel()
+elif os.getenv("ANTHROPIC_API_KEY"):
     model = AnthropicModel()
 else:
-    model = OllamaModel(host="http://localhost:11434", model_id="llama3.1")
+    model = OllamaModel(host="http://localhost:11434", model_id="llama1.1")
 
 # System Prompts
 CLASSIFICATION_SYSTEM_PROMPT = """

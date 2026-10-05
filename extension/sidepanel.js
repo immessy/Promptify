@@ -38,12 +38,15 @@ document.addEventListener('DOMContentLoaded', () => {
         body: JSON.stringify({ idea })
       });
 
-      if (!res.ok) {
-        throw new Error('Server returned ' + res.status);
-      }
+      let data;
+      try {
+        data = await res.json();
+      } catch (e) {}
 
-      const data = await res.json();
-      if (data.error) throw new Error(data.error);
+      if (!res.ok) {
+        throw new Error((data && data.error) ? data.error : 'Server returned ' + res.status);
+      }
+      if (data && data.error) throw new Error(data.error);
 
       // Populate UI
       suggestedTierLabel.textContent = data.tier.charAt(0).toUpperCase() + data.tier.slice(1);
@@ -59,7 +62,11 @@ document.addEventListener('DOMContentLoaded', () => {
       tierPicker.value = data.tier;
       tierSection.classList.remove('hidden');
     } catch (err) {
-      showError("Can't reach the local server — make sure it's running. " + err.message);
+      if (err.message.includes('Failed to fetch')) {
+        showError("Can't reach the local server — make sure it's running.");
+      } else {
+        showError(err.message);
+      }
     } finally {
       suggestBtn.disabled = false;
       suggestBtn.textContent = 'Suggest tier';
@@ -83,12 +90,15 @@ document.addEventListener('DOMContentLoaded', () => {
         body: JSON.stringify({ idea, tier })
       });
 
-      if (!res.ok) {
-        throw new Error('Server returned ' + res.status);
-      }
+      let data;
+      try {
+        data = await res.json();
+      } catch (e) {}
 
-      const data = await res.json();
-      if (data.error) throw new Error(data.error);
+      if (!res.ok) {
+        throw new Error((data && data.error) ? data.error : 'Server returned ' + res.status);
+      }
+      if (data && data.error) throw new Error(data.error);
 
       // Render documents
       data.documents.forEach(doc => {
@@ -117,7 +127,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
       documentsSection.classList.remove('hidden');
     } catch (err) {
-      showError("Can't reach the local server — make sure it's running. " + err.message);
+      if (err.message.includes('Failed to fetch')) {
+        showError("Can't reach the local server — make sure it's running.");
+      } else {
+        showError(err.message);
+      }
     } finally {
       generateBtn.disabled = false;
       generateBtn.textContent = 'Generate';
